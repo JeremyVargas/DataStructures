@@ -43,9 +43,8 @@ public class Vector <T>{
      * @return boolean
      */
     public boolean add (T element) {
-        if (this.size() >= this.capacity()) {
-            this.resize();
-        }
+        // Resize if needed
+        this.resize();
 
         // Adds an element and increments the current size
         try {
@@ -111,11 +110,24 @@ public class Vector <T>{
     // public int indexOf(<T> element)
 
     /**
-     *  Utility method for resizing when we hit full capacity. Copies elements into a new array of double the previous
-     *  capacity.
+     *  Utility method for resizing when we hit full capacity or one quarter capacity. Copies elements into a new array
+     *  of double/one half the previous capacity, respectively.
      */
     private void resize () {
-        Object[] newItems = new Object[this.capacity() * 2];
+        Object[] newItems;
+        if (this.size() >= this.capacity()) {
+            newItems = new Object[this.capacity() * 2];
+            this.capacity = this.capacity() * 2;
+        }
+
+        else if (this.size() <= this.capacity() / 4) {
+            newItems = new Object[this.capacity() / 2];
+            this.capacity = this.capacity() / 2;
+        }
+
+        else {
+            return;
+        }
         System.arraycopy(this.items, 0, newItems, 0, this.size);
         this.items = newItems;
     }
