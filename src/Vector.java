@@ -1,5 +1,3 @@
-import java.util.*
-;
 public class Vector <T>{
     // Default size capacity of the vector
     private final int DEFAULT_CAPACITY = 16;
@@ -43,13 +41,14 @@ public class Vector <T>{
      * @return boolean
      */
     public boolean add (T element) {
-        // Resize if needed
-        this.resize();
-
         // Adds an element and increments the current size
         try {
             items[size] = element;
             this.size++;
+
+            // Resize if needed
+            this.resize();
+
         } catch (ArrayStoreException e) {
             return false;
         }
@@ -57,7 +56,22 @@ public class Vector <T>{
         return true;
     }
 
-    // public void add (int index, <T> element)
+    /**
+     * Inserts element into the provided index and shifts everything at index and greater back by one.
+     * @param index
+     */
+    public void add (int index, T element) {
+        if (index < 0 || index >= this.size()) {
+            throw new IndexOutOfBoundsException(String.format("Index must be a positive integer less than %d",
+                    this.size()));
+        }
+
+        System.arraycopy(this.items, index, this.items, index + 1, this.size() - index);
+        this.size++;
+
+        // Resize if needed
+        this.resize();
+    }
 
     // public boolean remove (<T> element)
 
@@ -98,8 +112,8 @@ public class Vector <T>{
      */
     public T get (int index) {
         if (index < 0 || index >= this.size()) {
-            throw new IndexOutOfBoundsException(String.format("Attempted to access out of bounds. Index: %a, Size" +
-                    ": %b", index, this.size));
+            throw new IndexOutOfBoundsException(String.format("Attempted to access out of bounds. Index: %d, Size" +
+                    ": %d", index, this.size));
         }
 
         // Not too happy with this casting, need to see if there's a better way here. Feel like it defeats the whole
