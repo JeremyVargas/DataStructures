@@ -49,7 +49,12 @@ public class Vector <T>{
             // Resize if needed
             this.resize();
 
+            // Need to reconsider this behavior. May not want to hide an exception here if adding operation goes wrong.
+            // Also compiler shouldn't allow this theoretically
         } catch (ArrayStoreException e) {
+            return false;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            this.resize();
             return false;
         }
 
@@ -61,12 +66,13 @@ public class Vector <T>{
      * @param index
      */
     public void add (int index, T element) {
-        if (index < 0 || index >= this.size()) {
+        if (index < 0 || index > this.size()) {
             throw new IndexOutOfBoundsException(String.format("Index must be a positive integer less than %d",
                     this.size()));
         }
 
         System.arraycopy(this.items, index, this.items, index + 1, this.size() - index);
+        this.items[index] = element;
         this.size++;
 
         // Resize if needed
