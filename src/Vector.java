@@ -46,15 +46,15 @@ public class Vector <T>{
             items[size] = element;
             this.size++;
 
-            // Resize if needed
-            this.resize();
+            // Increase capacity if needed
+            this.resize(true);
 
             // Need to reconsider this behavior. May not want to hide an exception here if adding operation goes wrong.
             // Also compiler shouldn't allow this theoretically
         } catch (ArrayStoreException e) {
             return false;
         } catch (ArrayIndexOutOfBoundsException e) {
-            this.resize();
+            this.resize(true);
             return false;
         }
 
@@ -75,8 +75,8 @@ public class Vector <T>{
         this.items[index] = element;
         this.size++;
 
-        // Resize if needed
-        this.resize();
+        // Increase capacity if needed
+        this.resize(true);
     }
 
     // public boolean remove (<T> element)
@@ -133,14 +133,14 @@ public class Vector <T>{
      *  Utility method for resizing when we hit full capacity or one quarter capacity. Copies elements into a new array
      *  of double/one half the previous capacity, respectively.
      */
-    private void resize () {
+    private void resize (boolean sizingUp) {
         Object[] newItems;
-        if (this.size() >= this.capacity()) {
+        if (sizingUp && this.size() >= this.capacity()) {
             newItems = new Object[this.capacity() * 2];
             this.capacity = this.capacity() * 2;
         }
 
-        else if (this.size() <= this.capacity() / 4) {
+        else if (!sizingUp && this.size() <= this.capacity() / 4) {
             newItems = new Object[this.capacity() / 2];
             this.capacity = this.capacity() / 2;
         }
@@ -148,6 +148,7 @@ public class Vector <T>{
         else {
             return;
         }
+
         System.arraycopy(this.items, 0, newItems, 0, this.size);
         this.items = newItems;
     }
