@@ -187,10 +187,65 @@ public class VectorTest {
     }
 
     @Test
-    public void removeByElement() {}
+    public void removeByElementFound() {
+        // Arrange
+        Vector<String> testVector = new Vector<String>();
+        String element = "element";
+        testVector.add(element);
+
+        // Act
+        boolean successfullyRemoved = testVector.remove(element);
+
+        // Assert
+        Assert.assertTrue("Vector did not return successful element removal", successfullyRemoved);
+        Assert.assertEquals("Vector size should have been decremented after element removal",
+                0, testVector.size());
+    }
 
     @Test
-    public void removeByElementLowCapacity() {}
+    public void removeByElementNotFound() {
+        // Arrange
+        Vector<String> testVector = new Vector<String>();
+        String element = "element";
+        testVector.add(element);
+
+        // Act
+        boolean successfullyRemoved = testVector.remove("Not present");
+
+        // Assert
+        Assert.assertFalse("Vector did not return unsuccessful element removal", successfullyRemoved);
+        Assert.assertEquals("Vector size should have remained unchanged", 1, testVector.size());
+        Assert.assertEquals("Element was unexpectedly removed from Vector", element, testVector.get(0));
+    }
+
+    @Test
+    public void removeByElementLowCapacity() {
+        // Arrange
+        int initialCapacity = 4;
+        Vector<String> testVector = new Vector<String> (initialCapacity);
+        String element1 = "element1";
+        String element2 = "element2";
+        String element3 = "element3";
+        String element4 = "element4";
+        testVector.add(element1);
+        testVector.add(element2);
+        testVector.add(element3);
+        testVector.add(element4);
+
+        // Act
+        boolean successfullyRemoved1 = testVector.remove(element1);
+        boolean successfullyRemoved2 = testVector.remove(element2);
+        boolean successfullyRemoved3 = testVector.remove(element3);
+
+        // Assert
+        Assert.assertTrue("Vector did not return successful element removal (#1)", successfullyRemoved1);
+        Assert.assertTrue("Vector did not return successful element removal (#2)", successfullyRemoved2);
+        Assert.assertTrue("Vector did not return successful element removal (#3)", successfullyRemoved3);
+        Assert.assertEquals("Vector size should have been decremented after element removals",
+                1, testVector.size());
+        Assert.assertEquals("Vector should have been resized to half after element removals",
+                initialCapacity / 2, testVector.capacity());
+    }
 
     @Test
     public void removeByIndex() {}

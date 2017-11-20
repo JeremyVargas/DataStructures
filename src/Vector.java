@@ -79,9 +79,23 @@ public class Vector <T>{
         this.resize(true);
     }
 
-    // public boolean remove (<T> element)
+    /**
+     * Removes the requested element from Vector.
+     * @param element The element to remove from the Vector
+     * @return boolean Whether the requested item was removed
+     */
+    public boolean remove (T element) {
+        return false;
+    }
 
-    // public <T> remove(int index)
+    /**
+     * Removes the element at the requested index from the Vector.
+     * @param index
+     * @return element
+     */
+    public T remove(int index) {
+        return null;
+    }
 
     // public void clear ()
 
