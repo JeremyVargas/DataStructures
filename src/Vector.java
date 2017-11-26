@@ -85,6 +85,15 @@ public class Vector <T>{
      * @return boolean Whether the requested item was removed
      */
     public boolean remove (T element) {
+        for (int i = 0; i < this.size(); i++) {
+            if (this.items[i].equals(element)) {
+                this.items[i] = null;
+                System.arraycopy(this.items, i + 1, this.items, i, this.size() - i);
+                this.size--;
+                this.resize(false);
+                return true;
+            }
+        }
         return false;
     }
 
@@ -94,7 +103,23 @@ public class Vector <T>{
      * @return element
      */
     public T remove(int index) {
-        return null;
+        if (index < 0 || index >= this.size()) {
+            throw new IndexOutOfBoundsException(String.format("Index must be a positive integer less than %d",
+                    this.size()));
+        }
+
+        T element = (T) this.items[index];
+        if (element != null) {
+            this.items[index] = null;
+            System.arraycopy(this.items, index + 1, this.items, index, this.size() - index);
+            this.size--;
+            this.resize(false);
+            return element;
+        }
+
+        else {
+            return null;
+        }
     }
 
     // public void clear ()
