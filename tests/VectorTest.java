@@ -248,10 +248,94 @@ public class VectorTest {
     }
 
     @Test
-    public void removeByIndex() {}
+    public void removeByIndexFront() {
+        // Arrange
+        int initialSize = 3;
+        Vector<String> testVector = new Vector<String> ();
+        String element1 = "element1";
+        String element2 = "element2";
+        String element3 = "element3";
+        testVector.add(element1);
+        testVector.add(element2);
+        testVector.add(element3);
+
+        // Act
+        String result = testVector.remove(0);
+
+        // Assert
+        Assert.assertEquals("Vector did not return the correct element after removal", element1, result);
+        Assert.assertEquals("Vector size should have been decremented after element removal",
+                initialSize - 1, testVector.size());
+    }
 
     @Test
-    public void removeByIndexLowCapacity() {}
+    public void removeByIndexEnd() {
+        // Arrange
+        int initialSize = 3;
+        Vector<String> testVector = new Vector<String> ();
+        String element1 = "element1";
+        String element2 = "element2";
+        String element3 = "element3";
+        testVector.add(element1);
+        testVector.add(element2);
+        testVector.add(element3);
+
+        // Act
+        String result = testVector.remove(2);
+
+        // Assert
+        Assert.assertEquals("Vector did not return the correct element after removal", element3, result);
+        Assert.assertEquals("Vector size should have been decremented after element removal",
+                initialSize - 1, testVector.size());
+    }
+
+    @Test
+    public void removeByIndexException() {
+        // Arrange
+        int initialSize = 3;
+        Vector<String> testVector = new Vector<String> ();
+        String element1 = "element1";
+        String element2 = "element2";
+        String element3 = "element3";
+        testVector.add(element1);
+        testVector.add(element2);
+        testVector.add(element3);
+
+        // Expect
+        exceptionThrown.expect(IndexOutOfBoundsException.class);
+
+        // Act
+        testVector.remove(4);
+    }
+
+    @Test
+    public void removeByIndexLowCapacity() {
+
+        // Arrange
+        int initialSize = 3;
+        int initialCapacity = initialSize + 1;
+        Vector<String> testVector = new Vector<String> (initialCapacity);
+        String element1 = "element1";
+        String element2 = "element2";
+        String element3 = "element3";
+        testVector.add(element1);
+        testVector.add(element2);
+        testVector.add(element3);
+
+        // Act
+        String resultEnd = testVector.remove(2);
+        String resultMid = testVector.remove(1);
+
+        // Assert
+        Assert.assertEquals("Vector did not return the correct element after removing element at the end",
+                element3, resultEnd);
+        Assert.assertEquals("Vector did not return the correct element after removing middle element",
+                element2, resultMid);
+        Assert.assertEquals("Vector should have been decremented twice after element removal",
+                initialSize - 2, testVector.size());
+        Assert.assertEquals("Vector capacity should have been reduced to half after element removals",
+                initialCapacity / 2, testVector.capacity());
+    }
 
     @Test
     public void isEmptyTrue() {}
